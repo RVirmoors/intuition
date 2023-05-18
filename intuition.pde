@@ -4,7 +4,7 @@ boolean printFPS = false; // print frames per second to console
 boolean monophonic = true;
 boolean starsFullScreen = true;
 boolean hideStarsWhenInactive = true;
-int waitSecondsToHideWhenInactive = 223;
+int waitSecondsToHideWhenInactive = 22;
 int historyLength = 30; // how many stars to draw
 
 PWindow stars;

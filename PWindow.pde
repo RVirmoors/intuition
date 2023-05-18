@@ -1,3 +1,5 @@
+PGraphics pg;
+
 class PWindow extends PApplet {
   PWindow() {
     super();
@@ -13,11 +15,13 @@ class PWindow extends PApplet {
   }
 
   void setup() {
+    pg = createGraphics(1000, 1000);
   }
 
   void draw() {
     boolean saveFrame = false;
-    background(0);
+    pg.beginDraw();
+    pg.background(0);
     if (hideStarsWhenInactive && n_clicked > 0) {
       if (!file[n_clicked-1].isPlaying()) {
         if (wait > waitSecondsToHideWhenInactive * frameRate) {
@@ -45,36 +49,39 @@ class PWindow extends PApplet {
         saved = false;
       }
     }
-    strokeWeight(0);
-
-    if (starsFullScreen)
-      translate(420, 0);
+    pg.strokeWeight(0);
 
     // draw lines (from history[])
-    pushStyle();
-    stroke(100);
-    strokeWeight(1);
+    pg.pushStyle();
+    pg.stroke(100);
+    pg.strokeWeight(1);
     for (int i = 0; i < history.size() - 1; i++) {
       float x1 = starsFullScreen ? history.get(i).x : map(history.get(i).x, 0, 1080, 0, width);
       float x2 = starsFullScreen ? history.get(i+1).x : map(history.get(i+1).x, 0, 1080, 0, width);
-      line(x1, history.get(i).y, x2, history.get(i+1).y);
+      pg.line(x1, history.get(i).y, x2, history.get(i+1).y);
     }
-    popStyle();
+    pg.popStyle();
 
     // draw circles (from circles[].brightness)
     for (int i = 0; i < noCircles; i++) {
       if (circles[i].freshness > 0) {
         float f = circles[i].brightness * (255./historyLength) + random(0.01);
-        fill(f);
+        pg.fill(f);
         float x = starsFullScreen ? circles[i].x : map(circles[i].x, 0, 1080, 0, width);
-        circle(x, circles[i].y, circles[i].r);
+        pg.circle(x, circles[i].y, circles[i].r);
       }
     }
+    
+    pg.endDraw();
+    if (starsFullScreen)
+      image(pg, 420, 0);
+    else
+      image(pg, 0, 0);
     
     if (saveFrame) {
       String filename = savepath + "s" + currentScreen + ".png";
       println("SAVIN ", filename);
-      save(filename);
+      pg.save(filename);
       saved = true;
     }
   }
