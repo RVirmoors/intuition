@@ -3,6 +3,45 @@ import time
 import win32print
 import win32ui
 from PIL import Image, ImageWin
+import shutil
+
+# ====================== MOVE EXISTING PNGs
+
+current_folder = os.getcwd()
+oldsaves_folder = os.path.join(current_folder, 'oldsaves0')
+
+# Create oldsaves/ directory if it doesn't exist
+if not os.path.exists(oldsaves_folder):
+    os.mkdir(oldsaves_folder)
+
+# Check for existing oldsavesX/ folders
+existing_folders = [f for f in os.listdir(current_folder) if f.startswith('oldsaves')]
+latest_folder_num = max([0] + [int(f[len('oldsaves'):]) for f in existing_folders if f[len('oldsaves'):].isdigit()])
+latest_folder = os.path.join(current_folder, f'oldsaves{latest_folder_num}')
+
+# Create new folder if the latest folder already exists
+if os.path.exists(latest_folder):
+    latest_folder_num += 1
+    latest_folder = os.path.join(current_folder, f'oldsaves{latest_folder_num}')
+    os.mkdir(latest_folder)
+
+# Move .png files to the latest oldsavesX/ folder
+png_files = [f for f in os.listdir(current_folder) if f.endswith('.png')]
+for file in png_files:
+    src_path = os.path.join(current_folder, file)
+    dst_path = os.path.join(latest_folder, file)
+    shutil.move(src_path, dst_path)
+    print(f"Moved {file} to {latest_folder}")
+
+# Check for and delete empty subfolders within saves/
+subfolders = [f for f in os.listdir(current_folder) if os.path.isdir(os.path.join(current_folder, f))]
+for folder in subfolders:
+    folder_path = os.path.join(current_folder, folder)
+    if not os.listdir(folder_path):  # Check if the subfolder is empty
+        os.rmdir(folder_path)
+        print(f"Deleted empty subfolder: {folder}")
+
+# ================= PRINT ==============
 
 #
 # Constants for GetDeviceCaps
