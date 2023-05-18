@@ -10,12 +10,12 @@ class PWindow extends PApplet {
     if (starsFullScreen)
       fullScreen(1);
     else
-      size(1000, 1000);
+      size(1080, 1080);
     //noSmooth();
   }
 
   void setup() {
-    pg = createGraphics(1000, 1000);
+    pg = createGraphics(1080, 1080);
   }
 
   void draw() {
