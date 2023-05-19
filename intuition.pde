@@ -6,6 +6,7 @@ boolean starsFullScreen = true;
 boolean hideStarsWhenInactive = true;
 int waitSecondsToHideWhenInactive = 22;
 int historyLength = 30; // how many stars to draw
+float lineThickness = 1.75;
 
 PWindow stars;
 String savepath;

@@ -20,6 +20,7 @@ class PWindow extends PApplet {
 
   void draw() {
     boolean saveFrame = false;
+    background(0);
     pg.beginDraw();
     pg.background(0);
     if (hideStarsWhenInactive && n_clicked > 0) {
@@ -54,7 +55,7 @@ class PWindow extends PApplet {
     // draw lines (from history[])
     pg.pushStyle();
     pg.stroke(100);
-    pg.strokeWeight(1);
+    pg.strokeWeight(lineThickness);
     for (int i = 0; i < history.size() - 1; i++) {
       float x1 = starsFullScreen ? history.get(i).x : map(history.get(i).x, 0, 1080, 0, width);
       float x2 = starsFullScreen ? history.get(i+1).x : map(history.get(i+1).x, 0, 1080, 0, width);
